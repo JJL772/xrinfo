@@ -123,8 +123,28 @@ int main()
     XrSystemId sysId = 0;
     memset(&sysInfo, 0, sizeof(sysInfo));
     sysInfo.type = XR_TYPE_SYSTEM_GET_INFO;
+    sysInfo.formFactor = XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
 
     xrGetSystem(instance, &sysInfo, &sysId);
+    
+    XrSystemProperties sysProps;
+    memset(&sysProps, 0, sizeof(XrSystemProperties));
+    sysProps.type = XR_TYPE_SYSTEM_PROPERTIES;
+    
+    ASSERT_OK(instance, xrGetSystemProperties(instance, sysId, &sysProps));
+    
+    printf("\nSystem Info\n");
+    printf("-------------\n");
+    printf("  System Name: %s\n", sysProps.systemName);
+    printf("  Vendor ID: %u\n", sysProps.vendorId);
+    printf("  Graphics Props:\n");
+    printf("   Swapchain max W: %u\n", sysProps.graphicsProperties.maxSwapchainImageWidth);
+    printf("   Swapchain max H: %u\n", sysProps.graphicsProperties.maxSwapchainImageHeight);
+    printf("   Max layers: %u\n", sysProps.graphicsProperties.maxLayerCount);
+    printf("  Tracking:\n");
+    printf("   Orientation: %s\n", sysProps.trackingProperties.orientationTracking ? "true": "false");
+    printf("   Position: %s\n", sysProps.trackingProperties.positionTracking ? "true" : "false");
+    
     /******************/
 
     /******************/
